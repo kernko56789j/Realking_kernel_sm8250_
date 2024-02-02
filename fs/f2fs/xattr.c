@@ -803,13 +803,6 @@ same:
 	if (!error && S_ISDIR(inode->i_mode))
 		f2fs_inode_xattr_set(inode);
 
-same:
-	if (is_inode_flag_set(inode, FI_ACL_MODE)) {
-		inode->i_mode = F2FS_I(inode)->i_acl_mode;
-		inode->i_ctime = current_time(inode);
-		clear_inode_flag(inode, FI_ACL_MODE);
-	}
-
 exit:
 	kfree(base_addr);
 	return error;

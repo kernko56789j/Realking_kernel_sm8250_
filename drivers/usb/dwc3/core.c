@@ -1059,7 +1059,6 @@ int dwc3_core_init(struct dwc3 *dwc)
 		 * with a non-terminating retry ACK (i.e, an ACK transcation
 		 * packet with Retry=1 & Nump != 0)
 		 */
-		reg |= DWC3_GUCTL_HSTINAUTORETRY;
 
 		dwc3_writel(dwc->regs, DWC3_GUCTL, reg);
 	}

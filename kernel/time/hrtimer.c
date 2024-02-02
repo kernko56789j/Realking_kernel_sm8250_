@@ -1974,6 +1974,7 @@ static void __migrate_hrtimers(unsigned int scpu, bool remove_pinned)
 	local_irq_save(flags);
 	old_base = &per_cpu(hrtimer_bases, scpu);
 	new_base = this_cpu_ptr(&hrtimer_bases);
+
 	/*
 	 * The caller is globally serialized and nobody else
 	 * takes two locks at once, deadlock is not possible.
@@ -1990,10 +1991,7 @@ static void __migrate_hrtimers(unsigned int scpu, bool remove_pinned)
 	 * The migration might have changed the first expiring softirq
 	 * timer on this CPU. Update it.
 	 */
-	__hrtimer_get_next_event(new_base, HRTIMER_ACTIVE_SOFT);
-	/* Tell the other CPU to retrigger the next event */
-	smp_call_function_single(ncpu, retrigger_next_event, NULL, 0);
-
+	hrtimer_update_softirq_timer(new_base, false);
 	raw_spin_unlock(&new_base->lock);
 	old_base->online = 0;
 	raw_spin_unlock(&old_base->lock);
