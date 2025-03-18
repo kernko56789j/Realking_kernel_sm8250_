@@ -4712,6 +4712,8 @@ static int _sde_crtc_check_secure_state(struct drm_crtc *crtc,
 	return 0;
 }
 
+extern int kp_active_mode(void);
+
 #ifdef OPLUS_BUG_STABILITY
 extern int lcd_closebl_flag_fp;
 extern int oplus_dimlayer_hbm;
@@ -4751,9 +4753,16 @@ static int sde_crtc_onscreenfinger_atomic_check(struct sde_crtc_state *cstate,
 	if (!is_dsi_panel(cstate->base.crtc))
 		return 0;
 
-	if (fppressed_index > 0 || fp_mode == 1) {
-		devfreq_boost_kick_max(DEVFREQ_MSM_CPU_DDR_BW, 500);
-	}
+	if (kp_active_mode() == 3 || kp_active_mode() == 0) {
+                if (fppressed_index > 0 || fp_mode == 1) {
+                        devfreq_boost_kick_max(DEVFREQ_MSM_CPU_DDR_BW, 500);
+                            }
+        } else if (kp_active_mode() == 2) {
+                if (fppressed_index > 0 || fp_mode == 1) {
+                        devfreq_boost_kick_max(DEVFREQ_MSM_CPU_DDR_BW, 250);
+
+                            }
+        }
 
 	if (oplus_dimlayer_bl_enable) {
 		int backlight = oplus_get_panel_brightness();
