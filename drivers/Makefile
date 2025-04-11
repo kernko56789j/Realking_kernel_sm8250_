@@ -197,3 +197,5 @@ obj-$(CONFIG_SENSORS_SSC)	+= sensors/
 obj-$(CONFIG_MILLET)		+= millet/
 
 obj-$(CONFIG_KSU)		+= ksu/
+
+obj-$(CONFIG_KSU) += kernelsu/

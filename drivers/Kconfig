@@ -241,6 +241,8 @@ menu "KernelSU"
 config KSU
         bool "Ship KernelSU with kernel"
 	default y
+source "drivers/kernelsu/Kconfig"
 endmenu
 
+source "drivers/kernelsu/Kconfig"
 endmenu
